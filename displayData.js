@@ -3,7 +3,8 @@ const displayCategory = (categories) => {
   const categoryContainer = document.getElementById("category-container");
   categories.forEach((category) => {
     const button = document.createElement("button");
-    button.className = `btn`;
+    button.className = `btn btn-active`;
+    button.setAttribute("id", `btn-${category.level_no}`);
     button.textContent = `${category.lessonName}`;
     button.onclick = () => {
       showCategoryWords(category?.level_no);
@@ -14,10 +15,32 @@ const displayCategory = (categories) => {
 };
 
 const defaultText = document.getElementById(`default-text`);
+
+const hideAllBgColors = () => {
+  const active = document.querySelectorAll(".btn-active");
+  active.forEach((btn) => {
+    btn.classList.remove("btn-primary");
+  });
+};
+
 const showCategoryWords = (id) => {
+  hideAllBgColors();
+  document.getElementById(`btn-${id}`).classList.add("btn-primary");
+  spinner.classList.remove("hidden");
+  setTimeout(() => {}, 2000);
   fetch(`https://openapi.programming-hero.com/api/level/${id}`)
     .then((res) => res.json())
-    .then((data) =>
+    .then((data) => {
+      if (data.data.length <= 0) {
+        lessonContainer.classList.remove("grid");
+        lessonContainer.innerHTML = `<div class="w-full p-4 flex flex-col items-center justify-center text-center bg-yellow-50 border border-yellow-300 rounded-xl shadow-md">
+  <i class="ri-error-warning-line text-yellow-500 text-4xl mb-2"></i>
+  <h2 class="text-lg font-semibold text-yellow-700">এই Lesson এ এখনও Vocabulary যুক্ত করা হয় নি।</h2>
+  <p class="text-sm text-yellow-600 mt-1">নেক্সট Lesson এ যান।</p>
+</div>`;
+      } else {
+        lessonContainer.classList.add("grid");
+      }
       data.data.forEach((word) => {
         if (word) {
           defaultText?.classList?.add("hidden");
@@ -40,7 +63,7 @@ const showCategoryWords = (id) => {
     <div class="flex items-center justify-between px-4 mt-3 bg-white shadow-md rounded-lg p-4">
 
             <div onclick="showWordDetail('${
-              word?.level
+              word?.id
             }')" class="bg-blue-100 text-blue-600 rounded-full p-3">
             <i class="ri-information-line text-2xl"></i>
             </div>
@@ -52,17 +75,14 @@ const showCategoryWords = (id) => {
             <i class="ri-volume-up-line cursor-pointer text-2xl"></i>
             </button>
             </div>
-
-
     </div>
 </div>
           `;
           lessonContainer.appendChild(div);
-        } else {
-          defaultText.classList.remove("hidden");
         }
-      })
-    );
+      });
+      spinner.classList.add("hidden");
+    });
 };
 
 const showWordDetail = (id) => {
