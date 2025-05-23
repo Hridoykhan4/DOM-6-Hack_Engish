@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.css"
+      integrity="sha512-GmZYQ9SKTnOea030Tbiat0Y+jhnYLIpsGAe6QTnToi8hI2nNbVMETHeK4wm4MuYMQdrc38x+sX77+kVD01eNsQ=="
+      crossorigin="anonymous"
+    />
+    <style></style>
+  </head>
+
+  <body class="max-w-8xl mx-auto relative pt-24">
+    <!-- Header Section -->
+    <header
+      id="main-header"
+      class="fixed top-0 left-0 right-0 z-50 bg-gray-100 shadow-md py-4 px-16 flex justify-between items-center border border-gray-200"
+    >
+      <div class="flex items-center gap-2">
+        <h1 class="text-lg font-semibold">English</h1>
+        <h1>জানালা</h1>
+      </div>
+      <nav id="nav-items" class="sm:flex hidden gap-4">
+        <button
+          onclick="document.getElementById('faq').scrollIntoView({behavior: 'smooth'})"
+          class="border border-sky-600 px-4 py-2 rounded text-sky-700"
+        >
+          <i
+            class="fa-solid fa-circle-question fa-lg pr-2"
+            style="color: #4d87ea"
+          ></i
+          >FAQ
+        </button>
+        <button
+          onclick="document.getElementById('vocabulary').scrollIntoView({behavior: 'smooth'})"
+          class="border border-sky-600 px-4 py-2 rounded text-sky-700"
+        >
+          <i class="fa-solid fa-book-open fa-lg pr-2" style="color: #4d87ea"></i
+          >Learn
+        </button>
+        <button
+          onclick="logout()"
+          class="border border-sky-600 px-4 py-2 rounded text-sky-700"
+        >
+          <i
+            class="fa-solid fa-right-from-bracket fa-lg pr-2"
+            style="color: #4d87ea"
+          ></i
+          >Logout
+        </button>
+      </nav>
+
+      <div id="manage-bars" class="cursor-pointer sm:hidden hover:text-red-500">
+        <i class="fa-solid fa-[25px] fa-bars"></i>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section
+      id="hero-section"
+      class="flex flex-col md:flex-row items-center justify-between px-16 pt-10 bg-white"
+    >
+      <div class="max-w-lg">
+        <h2 class="text-4xl font-bold">
+          <span class="text-blue-500">English</span> is Easy!!
+        </h2>
+        <p class="mt-4 text-gray-700">
+          আগে থেকে আপনার ভাষা শিখার যাত্রা শুরু করুন! আমরা নতুন শব্দ আপনার মজবুত
+          করতে চাই, আমাদের Interactive Lessons আপনার জন্য অপেক্ষা করছে।
+        </p>
+        <input
+          id="username"
+          type="text"
+          placeholder="Enter Your Name"
+          class="border border-gray-400 p-2 mt-4 w-full max-w-sm"
+        />
+        <input
+          id="password"
+          type="password"
+          placeholder="Password"
+          class="border border-gray-400 p-2 mt-4 w-full max-w-sm"
+        />
+        <button
+          onclick="handleLogin()"
+          class="bg-blue-500 text-white px-6 py-2 rounded mt-2"
+        >
+          Get Started
+        </button>
+      </div>
+      <div>
+        <img
+          src="https://b11-a6-english-janala-tanvirulislam.netlify.app/assets/hero-student.png"
+          alt="User Profile"
+          class=""
+        />
+      </div>
+    </section>
+
+    <!-- Vocabulary Section -->
+    <section id="vocabulary" class="text-center py-2 bg-white">
+      <h2 class="text-2xl font-bold">
+        Let’s <span class="text-blue-500">Learn Vocabularies</span>
+      </h2>
+      <div
+        id="category-container"
+        class="mt-6 px-6 flex justify-center gap-2 flex-wrap"
+      ></div>
+    </section>
+
+    <section
+      id="lesson-container"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 bg-gray-100 rounded-xl shadow-md gap-8 w-11/12 mx-auto my-6 p-10"
+    >
+      <div
+        id="default-text"
+        class="col-span-full mx-16 my-6 bg-gray-100 p-16 text-center"
+      >
+        <p class="text-gray-600 text-sm">
+          আপনি যেকোনো একটি Lesson Select করতে পারেন।
+        </p>
+        <h3 class="text-xl font-semibold mt-2">একটি Lesson Select করুন।</h3>
+      </div>
+    </section>
+
+    <div id="spinner" class="hidden text-center py-10">
+      <div
+        class="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin mx-auto"
+      ></div>
+      <p class="mt-4 text-blue-600 font-medium">Loading...</p>
+    </div>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="bg-white px-16 py-24">
+      <h2 class="text-2xl mb-6 font-bold text-center">
+        Frequently <span class="text-blue-500">Asked Questions</span>
+      </h2>
+      <div>
+        <details class="mx-16 mb-2 bg-gray-100 p-6 rounded-lg shadow-md">
+          <summary class="font-bold">
+            What is the difference between var, let, and const?
+          </summary>
+          <p class="mt-2">
+            In JavaScript, var, let, and const are used to declare variables,
+            but they differ in scope and mutability: var is function-scoped and
+            can be re-declared and updated, while let and const are
+            block-scoped, with let allowing updates but not re-declaration, and
+            const preventing both.
+          </p>
+        </details>
+        <details class="mx-16 mb-2 bg-gray-100 p-6 rounded-lg shadow-md">
+          <summary class="font-bold">
+            What is the difference between map(), forEach(), and filter()
+          </summary>
+          <p class="mt-2">
+            In JavaScript, map(), forEach(), and filter() are array methods that
+            iterate through an array, but they differ in their purpose and
+            return values: map() transforms elements and returns a new array,
+            forEach() executes a function for each element but doesn't return
+            anything, and filter() creates a new array with elements that meet a
+            condition.
+          </p>
+        </details>
+        <details class="mx-16 mb-2 bg-gray-100 p-6 rounded-lg shadow-md">
+          <summary class="font-bold">
+            Explain arrow functions and how they are different from regular
+            functions.
+          </summary>
+          <p class="mt-2">
+            Arrow functions, introduced in ES6, offer a concise syntax for
+            writing functions in JavaScript, especially for simple expressions,
+            while regular functions provide a traditional syntax with more
+            flexibility, especially when dealing with complex logic or needing
+            to use this dynamically.
+          </p>
+        </details>
+        <details class="mx-16 mb-2 bg-gray-100 p-6 rounded-lg shadow-md">
+          <summary class="font-bold">How JavaScript Promises work?</summary>
+          <p class="mt-2">
+            It represent the eventual result of an asynchronous operation. Have
+            three states: pending, fulfilled, or rejected. Use .then() to handle
+            successful results and .catch() for errors. Enable cleaner, chained
+            asynchronous code, avoiding "callback hell." Essentially, they
+            provide a structured way to deal with tasks that take time, like
+            fetching data, without blocking your program.
+          </p>
+        </details>
+        <details class="mx-16 mb-2 bg-gray-100 p-6 rounded-lg shadow-md">
+          <summary class="font-bold">How closures work in JavaScript?</summary>
+          <p class="mt-2">
+            A JavaScript closure is when an inner function retains access to the
+            outer function's variables even after the outer function has
+            finished executing. It "remembers" its lexical environment.
+          </p>
+        </details>
+      </div>
+    </section>
+    <!-- Footer Section -->
+    <footer class="bg-white text-gray-900 border border-gray-200 py-24 px-16">
+      <div class="flex justify-between items-center max-w-8xl mx-auto">
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg font-semibold">English</h1>
+            <img src="./assets/logo.png" alt="Logo" class="h-6" />
+            <h1>জনালা</h1>
+          </div>
+          <p class="text-sm mt-8">ইংরেজি শিক্ষার সমাধান</p>
+          <p class="text-sm">Providing Ed-Tech Applications since 2025</p>
+        </div>
+        <div class="flex gap-4">
+          <p class="text-sm font-semibold">FOLLOW US</p>
+          <a
+            href="https://www.facebook.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><img src="./assets/fb-thumb.png" class="w-6" alt="Facebook"
+          /></a>
+          <a
+            href="https://www.youtube.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><img
+              src="./assets/youtube-thumb.png"
+              class="w-8 h-6"
+              alt="YouTube"
+          /></a>
+          <a
+            href="https://www.instagram.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><img
+              src="./assets/instagram-thumb.png"
+              class="w-6"
+              alt="Instagram"
+          /></a>
+          <a
+            href="https://www.github.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><img src="./assets/github-thumb.png" class="w-6" alt="GitHub"
+          /></a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Modal Structure -->
+
+    <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+      <div class="modal-box">
+        <div id="modal-content">
+
+        </div>
+        <div class="modal-action">
+          <form method="dialog">
+            <!-- if there is a button in form, it will close the modal -->
+            <button class="btn">Close</button>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <div
+      id="word-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+    >
+      <div class="bg-gray-100 p-8 rounded-xl shadow-lg max-w-md w-full">
+        <div id="modal-content">
+          <!-- Word details will be loaded here -->
+        </div>
+      </div>
+    </div>
+
+    <script src="./utilities.js"></script>
+    <script src="./displayData.js"></script>
+  </body>
+</html>
